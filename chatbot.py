@@ -23,3 +23,5 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
+
+# to run python3 chatbot.py
