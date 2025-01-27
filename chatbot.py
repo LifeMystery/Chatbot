@@ -9,3 +9,4 @@ def chatbot():
         
 if __name__ == "__main__":
     chatbot()
+    # to run this type python3 chatbot.py
