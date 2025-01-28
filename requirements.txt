@@ -1,1 +1,1 @@
-pip install transformers pyttsx3
+pip install transformers pyttsx3 speechrecognition

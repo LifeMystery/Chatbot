@@ -1,5 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import pyttsx3
+import speech_recognition as sr
 
 # Initialize text-to-speech engine
 engine = pyttsx3.init()
@@ -17,6 +18,23 @@ def get_response(input_text):
     response = tokenizer.decode(chat_history_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
     return response
 
+# Function for speech-to-text
+def listen():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        try:
+            audio = recognizer.listen(source)
+            text = recognizer.recognize_google(audio)
+            print(f"You said: {text}")
+            return text
+        except sr.UnknownValueError:
+            print("Sorry, I couldn't understand that.")
+            return ""
+        except sr.RequestError:
+            print("Request error. Please check your connection.")
+            return ""
+
 # Function for text-to-speech
 def speak(text):
     engine.say(text)
@@ -25,10 +43,13 @@ def speak(text):
 def chatbot():
     print("Welcome to the AI Chatbot!")
     while True:
+        print("Type 'audio' for voice mode, or type 'exit' to quit.")
         user_input = input("You: ").strip()
         if user_input.lower() == "exit":
-            speak("Goodbye!")
+            print("Goodbye!")
             break
+        elif user_input.lower() == "audio":
+            user_input = listen()
         response = get_response(user_input)
         print(f"AI: {response}")
         speak(response)
