@@ -1,4 +1,10 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import pyttsx3
+
+# Initialize text-to-speech engine
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)
+engine.setProperty('volume', 0.9)
 
 # Load pre-trained model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
@@ -11,15 +17,21 @@ def get_response(input_text):
     response = tokenizer.decode(chat_history_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
     return response
 
+# Function for text-to-speech
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
 def chatbot():
     print("Welcome to the AI Chatbot!")
     while True:
         user_input = input("You: ").strip()
         if user_input.lower() == "exit":
-            print("Goodbye!")
+            speak("Goodbye!")
             break
         response = get_response(user_input)
         print(f"AI: {response}")
+        speak(response)
 
 if __name__ == "__main__":
     chatbot()
