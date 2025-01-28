@@ -1,6 +1,8 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import pyttsx3
 import speech_recognition as sr
+import os
+import json
 
 # Initialize text-to-speech engine
 engine = pyttsx3.init()
@@ -10,6 +12,18 @@ engine.setProperty('volume', 0.9)
 # Load pre-trained model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
 model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
+
+# Function to save training data
+def train_data(new_data, file_path="custom_data.json"):
+    if not os.path.exists(file_path):
+        with open(file_path, "w") as file:
+            json.dump([], file)
+    with open(file_path, "r") as file:
+        data = json.load(file)
+    data.append(new_data)
+    with open(file_path, "w") as file:
+        json.dump(data, file)
+    print("Data has been added and saved.")
 
 # Function for chatbot response
 def get_response(input_text):
