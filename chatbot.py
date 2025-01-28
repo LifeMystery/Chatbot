@@ -42,17 +42,28 @@ def speak(text):
 
 def chatbot():
     print("Welcome to the AI Chatbot!")
-    while True:
-        print("Type 'audio' for voice mode, or type 'exit' to quit.")
-        user_input = input("You: ").strip()
-        if user_input.lower() == "exit":
-            print("Goodbye!")
-            break
-        elif user_input.lower() == "audio":
+    print("Type 'audio' to use voice input/output, or 'text' to type.")
+    print("Type 'exit' to quit.")
+    chat_mode = input("Choose your mode (audio/text): ").strip().lower()
+    if chat_mode == "audio":
+        while True:
             user_input = listen()
-        response = get_response(user_input)
-        print(f"AI: {response}")
-        speak(response)
+            if user_input.lower() == "exit":
+                speak("Goodbye!")
+                break
+            response = get_response(user_input)
+            print(f"AI: {response}")
+            speak(response)
+    elif chat_mode == "text":
+        while True:
+            user_input = input("You: ").strip()
+            if user_input.lower() == "exit":
+                print("Goodbye!")
+                break
+            response = get_response(user_input)
+            print(f"AI: {response}")
+    else:
+        print("Invalid mode. Please restart and choose 'audio' or 'text'.")
 
 if __name__ == "__main__":
     chatbot()
